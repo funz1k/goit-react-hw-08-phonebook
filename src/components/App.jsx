@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
-import { ContactsForm } from "components/ContactsForm/ContactsForm";
+import ContactsForm from "./ContactsForm";
+import ContactList from './ContactList';
+import ContactsFilter from './ContactsFilter';
 
 export class App extends Component {
   state = {
@@ -20,10 +22,34 @@ export class App extends Component {
       number,
     }
 
-    this.setState(({ contacts }) => ({ contacts: [contact, ...contacts] }))
+    const findContact = this.state.contacts.find(contact =>
+      contact.name.toLowerCase().includes(name.toLowerCase())
+    );
+
+    findContact
+      ? alert('This name is already in contact')
+      : this.setState(({ contacts }) => ({ contacts: [contact, ...contacts] }));
+  }
+
+  removeContact = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+    }))
+  }
+
+  onFilterContact = e => {
+    const { value } = e.currentTarget;
+
+    this.setState({ filter: value });
   }
 
   render() {
+    const { contacts, filter } = this.state;
+    const normalizeFilter = filter.toLowerCase();
+    const visibleContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizeFilter)
+    );
+
     return (
       <div
         style={{
@@ -35,13 +61,12 @@ export class App extends Component {
           color: '#010101'
         }}
       >
+        <h1>Phone Book</h1>
         <ContactsForm onSubmit={this.addContact} />
-        <div>
-          <h2>Contacts</h2>
-          <ul>
-            {this.state.contacts.map(elem => (<li key={elem.id}>{elem.name}:{elem.number}</li>))}
-          </ul>
-        </div>
+
+        <h2>Contacts</h2>
+        <ContactsFilter filter={filter} onChange={this.onFilterContact} />
+        <ContactList contacts={visibleContacts} removeContact={this.removeContact} />
       </div>
     );
   }
