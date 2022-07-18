@@ -1,8 +1,11 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
+import Container from './Container';
+import AppContainer from './AppContainer';
 import ContactsForm from "./ContactsForm";
 import ContactList from './ContactList';
 import ContactsFilter from './ContactsFilter';
+
 
 export class App extends Component {
   state = {
@@ -51,23 +54,15 @@ export class App extends Component {
     );
 
     return (
-      <div
-        style={{
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: 40,
-          color: '#010101'
-        }}
-      >
-        <h1>Phone Book</h1>
-        <ContactsForm onSubmit={this.addContact} />
-
-        <h2>Contacts</h2>
-        <ContactsFilter filter={filter} onChange={this.onFilterContact} />
-        <ContactList contacts={visibleContacts} removeContact={this.removeContact} />
-      </div>
+      <AppContainer title="Phonebook">
+        <Container title='Add Contacts:'>
+          <ContactsForm onSubmit={this.addContact} />
+        </Container>
+        <Container title='Contacts:'>
+          <ContactsFilter filter={filter} onChange={this.onFilterContact} />
+          <ContactList contacts={visibleContacts} removeContact={this.removeContact} />
+        </Container>
+      </AppContainer>
     );
   }
 }
