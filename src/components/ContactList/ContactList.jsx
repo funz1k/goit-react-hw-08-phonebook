@@ -1,11 +1,9 @@
 import { PropTypes } from 'prop-types';
 import { ListItem, Contact, CloseBtn, ContactName, ContactNumber } from './ContactList.styled';
-import { useDispatch } from 'react-redux';
-import { removeContact } from 'redux/ContactSlice';
+import { useDeleteContactMutation } from 'redux/contactSlice'
 
 const ContactList = ({ contacts }) => {
-    const dispatch = useDispatch();
-
+    const [deleteContact] = useDeleteContactMutation();
     return (
         <div>
             <ul>
@@ -16,7 +14,7 @@ const ContactList = ({ contacts }) => {
                                 <ContactName>{name}:</ContactName>
                                 <ContactNumber>{number}</ContactNumber>
                             </Contact>
-                            <CloseBtn type="button" onClick={() => dispatch(removeContact(id))}>
+                            <CloseBtn type="button" onClick={() => deleteContact(id)}>
                                 Delete
                             </CloseBtn>
                         </ListItem>

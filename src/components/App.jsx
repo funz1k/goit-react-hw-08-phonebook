@@ -1,39 +1,47 @@
-import { nanoid } from 'nanoid';
 import Container from './Container';
 import AppContainer from './AppContainer';
 import ContactsForm from "./ContactsForm";
 import ContactList from './ContactList';
 import ContactsFilter from './ContactsFilter';
-import { useDispatch, useSelector } from 'react-redux';
-import { getContact, filterContacts } from 'redux/selector';
-import { addItem } from 'redux/ContactSlice';
-
+import { useState } from 'react';
+import { useGetContactsQuery, useCreateContactMutation } from 'redux/contactSlice'
 
 const App = () => {
-  const dispatch = useDispatch();
 
-  const contacts = useSelector(getContact);
-  const filter = useSelector(filterContacts);
+  const [filter, setFilter] = useState('');
+  const [createContact] = useCreateContactMutation();
+  const { data, isFetching } = useGetContactsQuery();
+
+  const changeFilter = event => {
+    setFilter(event.currentTarget.value);
+  };
 
   const addContact = (name, number) => {
     const contact = {
-      id: nanoid(),
       name,
       number,
     }
-    const findContact = contacts.find(contact =>
+    const findContact = data.find(contact =>
       contact.name.toLowerCase().includes(name.toLowerCase())
     );
 
     findContact
       ? alert('This name is already in contact')
-      : dispatch(addItem(contact))
+      : createContact(contact);
   }
 
-  const normalizeFilter = filter.toLowerCase();
-  const visibleContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(normalizeFilter)
-  );
+  const visibleContacts = () => {
+    const normalizeFilter = filter.toLowerCase();
+
+    if (data) {
+      if (data.length !== 0) {
+        return data.filter(contact =>
+          contact.name.toLowerCase().includes(normalizeFilter)
+        );
+      }
+    }
+    return;
+  };
 
   return (
     <AppContainer title="Phonebook">
@@ -41,8 +49,8 @@ const App = () => {
         <ContactsForm onSubmit={addContact} />
       </Container>
       <Container title='Contacts:'>
-        <ContactsFilter />
-        <ContactList contacts={visibleContacts} />
+        <ContactsFilter filter={filter} onChange={changeFilter} />
+        {isFetching ? (<p>Loading ...</p>) : <ContactList contacts={visibleContacts()} />}
       </Container>
     </AppContainer>
   );
