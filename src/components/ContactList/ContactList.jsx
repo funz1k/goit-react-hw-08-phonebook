@@ -1,6 +1,6 @@
 import { PropTypes } from 'prop-types';
 import { ListItem, Contact, CloseBtn, ContactName, ContactNumber } from './ContactList.styled';
-import { useDeleteContactMutation } from 'redux/contactSlice'
+import { useDeleteContactMutation } from 'redux/ContactSlice'
 
 const ContactList = ({ contacts }) => {
     const [deleteContact] = useDeleteContactMutation();
