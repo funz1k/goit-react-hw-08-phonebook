@@ -1,58 +1,52 @@
-import Container from './Container';
-import AppContainer from './AppContainer';
-import ContactsForm from "./ContactsForm";
-import ContactList from './ContactList';
-import ContactsFilter from './ContactsFilter';
-import { useState } from 'react';
-import { useGetContactsQuery, useCreateContactMutation } from 'redux/ContactSlice'
+import { Routes, Route } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
+import { InfinitySpin } from 'react-loader-spinner';
+import PrivateRoute from 'components/PrivateRoute';
+import PublicRoute from 'components/PublicRoute';
+import { useDispatch } from 'react-redux';
+import authOperations from 'redux/auth/auth-operations';
+
+
+const AppBar = lazy(() => import('components/AppBar/AppBar'));
+const Home = lazy(() => import('pages/Home/Home'));
+const Contacts = lazy(() => import('pages/Contacts/Contacts'));
+const Login = lazy(() => import('pages/Login/Login'));
+const Register = lazy(() => import('pages/Register/Register'));
 
 const App = () => {
 
-  const [filter, setFilter] = useState('');
-  const [createContact] = useCreateContactMutation();
-  const { data, isFetching } = useGetContactsQuery();
+  const dispatch = useDispatch();
 
-  const changeFilter = event => {
-    setFilter(event.currentTarget.value);
-  };
+  useEffect(() => {
+    dispatch(authOperations.fetchCurrentUser())
+  }, [dispatch])
 
-  const addContact = (name, number) => {
-    const contact = {
-      name,
-      number,
-    }
-    const findContact = data.find(contact =>
-      contact.name.toLowerCase().includes(name.toLowerCase())
-    );
-
-    findContact
-      ? alert('This name is already in contact')
-      : createContact(contact);
-  }
-
-  const visibleContacts = () => {
-    const normalizeFilter = filter.toLowerCase();
-
-    if (data) {
-      if (data.length !== 0) {
-        return data.filter(contact =>
-          contact.name.toLowerCase().includes(normalizeFilter)
-        );
-      }
-    }
-    return;
-  };
 
   return (
-    <AppContainer title="Phonebook">
-      <Container title='Add Contacts:'>
-        <ContactsForm onSubmit={addContact} />
-      </Container>
-      <Container title='Contacts:'>
-        <ContactsFilter filter={filter} onChange={changeFilter} />
-        {isFetching ? (<p>Loading ...</p>) : <ContactList contacts={visibleContacts()} />}
-      </Container>
-    </AppContainer>
+    <>
+      <Suspense fallback={<InfinitySpin width="100" color="#132b13" />}>
+        <Routes>
+          <Route path="/" element={<AppBar />}>
+            <Route index element={<Home />} />
+            <Route
+              element={
+                <PublicRoute
+                  redirectPath="/contacts"
+                  restricted
+                />
+              }
+            >
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+            </Route>
+            <Route element={<PrivateRoute redirectPath="/" />}>
+              <Route path="/contacts" element={<Contacts />} />
+            </Route>
+          </Route>
+        </Routes>
+      </Suspense>
+    </>
+
   );
 }
 
