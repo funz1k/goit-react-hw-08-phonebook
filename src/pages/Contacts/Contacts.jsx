@@ -4,7 +4,7 @@ import ContactsForm from "components/ContactsForm";
 import ContactList from 'components/ContactList';
 import ContactsFilter from 'components/ContactsFilter';
 import { useState } from 'react';
-import { useGetContactsQuery, useCreateContactMutation } from 'redux/ContactSlice'
+import { useGetContactsQuery, useCreateContactMutation } from 'redux//contacts/ContactSlice'
 
 const Contacts = () => {
     const [filter, setFilter] = useState('');

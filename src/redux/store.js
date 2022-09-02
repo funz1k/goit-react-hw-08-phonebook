@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { contactsApi } from './ContactSlice';
+import { contactsApi } from 'redux/contacts/ContactSlice';
 import { authReducer } from './auth/auth-slice';
 import {
 	persistStore,
