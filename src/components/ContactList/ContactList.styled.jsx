@@ -1,32 +1,49 @@
 import styled from 'styled-components';
 
-export const ListItem = styled.li`
+export const ListContainer = styled.ul`
+    width: 90%;
     display: flex;
-    width: 100%;
+    flex-direction: column;
     align-items: center;
-    border-bottom: 1px solid black;
+    padding-bottom: 50px;
+    margin-right: 50px;
+    margin-left: 50px;
+`
+
+export const ListItem = styled.li`
+    display: grid;
+    width: 100%;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    border-bottom: 1px solid #d3d3d3;
     padding: 10px 0;
+    
+        &:not(:last-child) {
+        margin-bottom: 30px;
+        }
 `;
 
-export const Contact = styled.p`
-    display: flex;
-    width: 50%;
-    justify-content: space-between;
-    `;
+// export const Contact = styled.div`
+
+//     `;
 
 export const CloseBtn = styled.button`
-    padding: 8px 10px;
-    margin-left: auto;
-    font-size: 16px;
-    background-color: inherit;
-    border: 1px solid #1d628b;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #1d628b;
+    background-color: #1976d2;
+    width: 150px;
+    min-height: 40px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+    font-size: 0.875rem;
+	line-height: 1.75;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase;
     transition: all 300ms ease;
+    margin-left: auto;
+
+
     &:hover {
-        background-color: #1d628b;
-        color: white;
+        opacity: 90%;
     }
 `;
 

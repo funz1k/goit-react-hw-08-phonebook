@@ -1,8 +1,8 @@
 import Container from 'components/Container';
-import AppContainer from 'components/AppContainer';
 import ContactsForm from "components/ContactsForm";
 import ContactList from 'components/ContactList';
 import ContactsFilter from 'components/ContactsFilter';
+import { LineWave } from 'react-loader-spinner';
 import { useState } from 'react';
 import { useGetContactsQuery, useCreateContactMutation } from 'redux//contacts/ContactSlice'
 
@@ -43,15 +43,15 @@ const Contacts = () => {
     };
 
     return (
-        <AppContainer title="Phonebook">
-            <Container title='Add Contacts:'>
+        <>
+            <Container title='Add Contact'>
                 <ContactsForm onSubmit={addContact} />
             </Container>
-            <Container title='Contacts:'>
+            <Container title='Contacts'>
                 <ContactsFilter filter={filter} onChange={changeFilter} />
-                {isFetching ? (<p>Loading ...</p>) : <ContactList contacts={visibleContacts()} />}
+                {isFetching ? (<LineWave width="300" height="200" color="#1976d2" />) : <ContactList contacts={visibleContacts()} />}
             </Container>
-        </AppContainer >
+        </>
     );
 };
 

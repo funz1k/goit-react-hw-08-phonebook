@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import { lazy, Suspense, useEffect } from 'react';
-import { InfinitySpin } from 'react-loader-spinner';
 import PrivateRoute from 'components/PrivateRoute';
 import PublicRoute from 'components/PublicRoute';
 import { useDispatch } from 'react-redux';
@@ -24,7 +23,7 @@ const App = () => {
 
   return (
     <>
-      <Suspense fallback={<InfinitySpin width="100" color="#132b13" />}>
+      <Suspense>
         <Routes>
           <Route path="/" element={<AppBar />}>
             <Route index element={<Home />} />

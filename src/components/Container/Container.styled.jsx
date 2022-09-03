@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 export const Section = styled.div`
-  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 5px;
   border: 2px solid #77767628;
   border-radius: 5px;
@@ -9,6 +11,9 @@ export const Section = styled.div`
 `;
 
 export const Title = styled.h2`
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 22px;
   text-align: center;
-  margin: 20px 0;
+  margin: 40px 0;
 `;

@@ -1,12 +1,13 @@
-import { HomeContainer, Button, ButtonContainer, Link } from './Home.styled';
+import { HomeContainer, Button, ButtonContainer, Link, HomeTitle, TitleElem } from './Home.styled';
 
 const Home = () => {
 
     return (
         <HomeContainer>
-            <h1>
-                My Phone book
-            </h1>
+            <HomeTitle>
+                <TitleElem>My</TitleElem>
+                <TitleElem>Phonebook</TitleElem>
+            </HomeTitle>
             <ButtonContainer>
                 <Button>
                     <Link to="/login">Sign In</Link>
